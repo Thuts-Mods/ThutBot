@@ -91,6 +91,9 @@ dependencies {
 
     // Here we import the version of pokecube to use.
     implementation fg.deobf("curse.maven:pokecube-aio-${version_pokecube}")
+    
+    //Thut Essentials
+    implementation fg.deobf("curse.maven:thutessentials-${version_thutessentials}")
 }
 
 // Example for how to get properties into the manifest for reading by the runtime..

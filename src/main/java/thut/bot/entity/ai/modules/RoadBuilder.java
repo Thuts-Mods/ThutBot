@@ -33,13 +33,13 @@ import net.minecraft.world.level.levelgen.Heightmap.Types;
 import net.minecraft.world.level.material.FluidState;
 import net.minecraft.world.phys.Vec3;
 import pokecube.world.terrain.PokecubeTerrainChecker;
-import thut.api.terrain.BiomeType;
 import thut.api.terrain.StructureManager;
 import thut.api.terrain.StructureManager.StructureInfo;
-import thut.api.terrain.TerrainManager;
 import thut.bot.entity.BotPlayer;
 import thut.bot.entity.ai.BotAI;
 import thut.core.common.ThutCore;
+import thut.essentials.land.LandManager;
+import thut.essentials.land.LandManager.LandTeam;
 import thut.lib.TComponent;
 
 @BotAI(key = "thutbot:road")
@@ -657,7 +657,18 @@ public class RoadBuilder extends AbstractBot
     private void setBlock(ServerLevel level, BlockPos p, BlockState state, int flags)
     {
         level.setBlock(p, state, flags);
-        TerrainManager.getInstance().getTerrain(level, p).setBiome(p, BiomeType.getBiome(subbiome));
+
+        if (!subbiome.startsWith("route_")) return;
+
+        LandTeam team = LandManager.getInstance().getTeam("thutbot_" + subbiome, done);
+
+        team.allPublic = true;
+        team.anyBreak = true;
+        team.anyPlace = true;
+        team.reserved = true;
+        
+        team.enterMessage = "Route " + subbiome.replace("route_", "");
+        LandManager.getInstance().claimLand(team.teamName, level, p, false);
     }
 
 }
