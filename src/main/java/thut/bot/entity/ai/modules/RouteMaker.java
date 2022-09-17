@@ -470,7 +470,9 @@ public class RouteMaker extends AbstractBot
                 }
                 road_maker.subbiome = "route_" + traverse.index;
 
-                player.chat("Starting Road!" + road_maker.subbiome);
+                int edges = 0;
+                for (var e : this.map.allParts.values()) if (e instanceof Edge) edges++;
+                player.chat("Starting Road! " + road_maker.subbiome + ", out of " + edges);
             }
             else
             {

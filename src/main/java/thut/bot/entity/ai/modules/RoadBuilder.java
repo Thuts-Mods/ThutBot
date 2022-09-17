@@ -38,8 +38,10 @@ import thut.api.terrain.StructureManager.StructureInfo;
 import thut.bot.entity.BotPlayer;
 import thut.bot.entity.ai.BotAI;
 import thut.core.common.ThutCore;
+import thut.essentials.commands.land.claims.Claim;
 import thut.essentials.land.LandManager;
 import thut.essentials.land.LandManager.LandTeam;
+import thut.essentials.land.LandSaveHandler;
 import thut.lib.TComponent;
 
 @BotAI(key = "thutbot:road")
@@ -660,15 +662,25 @@ public class RoadBuilder extends AbstractBot
 
         if (!subbiome.startsWith("route_")) return;
 
-        LandTeam team = LandManager.getInstance().getTeam("thutbot_" + subbiome, done);
+        LandTeam team = LandManager.getInstance().getTeam("thutbot_" + subbiome, true);
+        LandManager.getInstance()._team_land.put(team.land.uuid, team);
 
-        team.allPublic = true;
-        team.anyBreak = true;
-        team.anyPlace = true;
-        team.reserved = true;
-        
-        team.enterMessage = "Route " + subbiome.replace("route_", "");
-        LandManager.getInstance().claimLand(team.teamName, level, p, false);
+        if (team.enterMessage.isBlank())
+        {
+            team.allPublic = true;
+            team.anyBreak = true;
+            team.anyPlace = true;
+            team.reserved = true;
+
+            LandSaveHandler.saveTeam(team.teamName);
+
+            team.enterMessage = "Route " + subbiome.replace("route_", "");
+            team.exitMessage = "-";
+        }
+
+        BlockPos newPos = new BlockPos(SectionPos.blockToSectionCoord(p.getX()),
+                SectionPos.blockToSectionCoord(p.getY()), SectionPos.blockToSectionCoord(p.getZ()));
+        Claim.claim(level, newPos, getBot(), team, false, true);
     }
 
 }

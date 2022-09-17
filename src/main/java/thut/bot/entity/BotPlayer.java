@@ -136,7 +136,7 @@ public class BotPlayer extends ServerPlayer implements Npc
     public void onChat(ServerChatEvent event)
     {
         ServerPlayer talker = event.getPlayer();
-        if (talker instanceof BotPlayer) return;
+        if (talker instanceof BotPlayer || !(event instanceof ServerChatEvent.Submitted)) return;
 
         String cmd = event.getMessage().getString();
 
