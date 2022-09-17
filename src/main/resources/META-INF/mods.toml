@@ -4,12 +4,12 @@ issueTrackerURL=""
 license="All rights reserved"
 
 [[mods]]
-    modId="examplemod"
+    modId="thutbot"
     version="${file.jarVersion}"
-    displayName="Pokécube Example Addon"
-    authors="ExamplesRUS"
+    displayName="Server Side Bot for testing stuff"
+    authors="Thutmose"
     description='''
-    Example of an addon development environment for pokecube
+    ThutBot does things.
     '''
     
 [[dependencies.examplemod]]
